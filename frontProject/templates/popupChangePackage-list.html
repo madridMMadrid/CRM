@@ -1,0 +1,27 @@
+<% var randomity = Math.floor(Math.random() * 100000000000);%>
+<div class="panel panel-white">
+	<a data-toggle="collapse" data-parent="<%= typeof parentAccordion != 'undefined' ? parentAccordion : '#accordion-control' %>" href="#accordion-group_<%= id + randomity %>" aria-expanded="false" class="collapsed ">
+	<div class="panel-heading js-clients-package-popup" data-id="<%= id %>">
+		<div class="media-left media-middle">
+			<div class="btn btn-rounded btn-icon btn-xs  <%= type == 'Silver' ? 'bg-grey-300' : 'bg-orange-400' %>">
+				<span class="letter-icon ">
+					<%= type == 'Silver' ? 'S' : 'G' %>
+				</span>
+			</div>
+		</div>
+		<div class="media-body">
+			<div class="media-heading">
+				<span class="letter-icon-title"><%= name %></span>
+			</div>
+			<div class="text-muted text-size-small">
+				<span class="js-client_package-comment"><%= type %></span>
+			</div>
+		</div>
+	</div>
+	</a>
+	<div id="accordion-group_<%= id + randomity %>" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+		<div class="panel-body">
+			<div class="currentPackageAndNew"></div>
+		</div>
+	</div>
+</div>

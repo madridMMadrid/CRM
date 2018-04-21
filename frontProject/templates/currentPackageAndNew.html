@@ -1,0 +1,56 @@
+<form>
+	<div class="panel-body col-md-12 no-padding">
+		<p>Останется дней без доплаты: <a class="letter-icon-title pull-right"><%= newPackage.justEatDays %></a></p>
+		<div class="panel-body no-padding js-mainChangePackageNode">
+			<p>Продлить, до количества дней: </p>
+			<ul class="pagination-rounded clients_radio col-md-12 no-padding">
+					<li>
+						<label class="no-margin-left" data-popup="tooltip" data-container="body" data-original-title="Не продливат">
+					    	<input type="radio" name="client_priceId" value="0" class="clients_radio_icon_change js-hideChangePackageSum" checked>
+					    	<i class="icon-minus-circle2"></i>
+					    </label>
+			    	</li>
+				<% 
+					for(var i=0,len=newPackage.paymentActions.length;i<len;i++){ 
+
+					var item = newPackage.paymentActions[i];
+				%>
+
+					<li>
+						<label class="no-margin-left" data-popup="tooltip" data-container="body" data-original-title="Продлить до <%= item.packageLength %> дней">
+					    	<input type="radio" name="client_priceId" value="<%= item.id %>" class="clients_radio_icon_change">
+					    	<span><%= item.packageLength %></span>
+					    </label>
+			    	</li>
+				<% } %>
+			</ul>
+		</div>
+		<div class="panel-body no-border no-padding js-client-hideOnNoCard hidden_number">
+			<div class="clients_radio_extend">
+				<label class="no-margin-left" data-popup="tooltip" data-container="body" data-original-title="Наличными">
+			    	<input type="radio" name="client_payment" value="1" checked>
+			    	<i class="icon-coin-dollar"></i>
+			    </label>
+
+			    <label data-popup="tooltip" data-container="body" data-original-title="Картой онлайн">
+			    	<input type="radio" name="client_payment" value="2">
+			    	<i class="icon-credit-card"></i>
+			    </label>
+
+			    <label class="no-margin-right" data-popup="tooltip" data-container="body" data-original-title="Картой курьеру">
+			    	<input type="radio" name="client_payment" value="3">
+			    	<i class="icon-person"></i>
+			    </label>
+			</div>
+		</div>
+		<br/>
+		<div class="well well-sm js-client-hideOnNoSum hidden_number">
+		    Сумма к оплате:  
+		    <div class="pull-right">
+		    	<code>
+		    		<span class="js-client-changPackageeOnSum"></span>
+		    	</code>
+		    </div>
+		</div>
+	</div>
+</form>

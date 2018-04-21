@@ -1,0 +1,107 @@
+<!-- Page header -->
+<div class="page-header page-header-default">
+    <div class="page-header-content">
+        <div class="page-title">
+            <h4>
+                <i class="icon-arrow-left52 position-left" id="goBackToGoodOldPage"></i>
+                <span class="text-semibold">Панель управления</span>
+            </h4>
+        </div>
+    </div>
+</div>
+<!-- /page header -->
+<div class="content">
+	<div class="row">
+		<div class="col-lg-6">
+			<!-- Today's revenue -->
+			<div class="panel bg-teal-400">
+				<div class="panel-body">
+					<h3 class="no-margin"><%= turnover.total %></h3>
+					Оборот
+					<div class="text-muted text-size-small">$37,578 avg</div>
+				</div>
+
+				<div id="today-revenue"></div>
+			</div>
+			<!-- /today's revenue -->
+		</div>
+		<div class="col-md-6">
+			<div class="panel panel-flat">
+				<div class="panel-body">
+					<div class="media-left">
+						<div class="chart-container text-center">
+							<div class="display-inline-block" id="c3-pie-chart"></div>
+						</div>
+					</div>
+					<div class="media-left">
+						<div class="table-responsive">
+							<table class="table text-nowrap">
+								<tbody>
+									<tr>
+										<td class="no-border-top">Оборот</td>
+										<td class="no-border-top"><%= turnover.total %></td>
+										<td class="no-border-top">
+											<small class="text-success text-size-base"><i class="icon-arrow-up12"></i> 
+												(+16.2%)
+											</small>
+										</td>
+									</tr>
+									<tr>
+										<td>Наличными</td>
+										<td><%= turnover.cash %></td>
+										<td>
+											<small class="text-success text-size-base"><i class="icon-arrow-up12"></i> 
+												(+16.2%)
+											</small>
+										</td>
+									</tr>
+									<tr>
+										<td>Картой курьеру</td>
+										<td><%= turnover.card %></td>
+										<td>
+											<small class="text-success text-size-base"><i class="icon-arrow-up12"></i> 
+												(+16.2%)
+											</small>
+										</td>
+									</tr>
+									<tr>
+										<td>Картой онлайн</td>
+										<td><%= turnover.online %></td>
+										<td>
+											<small class="text-success text-size-base"><i class="icon-arrow-up12"></i> 
+												(+16.2%)
+											</small>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<!-- <h5 class="text-semibold no-margin">Оборот: <%= turnover.total %>
+							<small class="text-success text-size-base"><i class="icon-arrow-up12"></i> 
+								(+16.2%)
+							</small>
+						</h5>
+						<h6 class="text-semibold no-margin">Наличными: <%= turnover.cash %>
+							<small class="text-success text-size-base"><i class="icon-arrow-up12"></i> 
+								(+16.2%)
+							</small>
+						</h5>
+						<h6 class="text-semibold no-margin">Картой курьеру: <%= turnover.cash %>
+							<small class="text-success text-size-base"><i class="icon-arrow-up12"></i> 
+								(+16.2%)
+							</small>
+						</h5>
+						<h6 class="text-semibold no-margin">Картой онлайн: <%= turnover.cash %>
+							<small class="text-success text-size-base"><i class="icon-arrow-up12"></i> 
+								(+16.2%)
+							</small>
+						</h5> -->
+					</div>
+					<!-- <div class="col-md-6">
+						test
+					</div> -->
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,15 @@
+<% for (var i=comments.length-1, len=-1; i>len; i--){ %>		
+	<li class="media <%= comments[i].isMyComment ? 'reversed' : '' %> ">
+		<div class="media-body">
+			<div class="media-content">
+					<%= comments[i].comment  %>
+			</div>
+			<span class="media-annotation display-block mt-10"><%= comments[i].date %></span>
+		</div>
+		<div class="media-right">
+			<a href="assets/images/placeholder.jpg">
+				<img src="assets/images/placeholder.jpg" class="img-circle img-md" alt="">
+			</a>
+		</div>
+	</li>
+<% } %>

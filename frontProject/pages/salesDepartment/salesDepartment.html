@@ -1,0 +1,71 @@
+<!-- Page header -->
+<div class="page-header page-header-default no-margin-bottom">
+    <div class="page-header-content">
+        <div class="page-title">
+            <h4>
+                <i class="icon-arrow-left52 position-left" id="goBackToGoodOldPage"></i>
+                <span class="text-semibold">Моя статистика</span>
+            </h4>
+        </div>
+    </div>
+</div>
+<!-- /page header -->
+    <div class="content no-padding over">
+     <div class="outside_wrap">
+        <div class="wrapper_chart">
+            
+
+            <% _.each(users, function(item, index, ar){ %>
+                <div class="chart one_chart">
+                    <div class="wrap_top_bottom one">
+                        <% if (index == 0) { %>
+                            <i class="icon-crown"></i>
+                        <% } %>
+                        <div class="wrap_img">
+                            <img src="<%= item.picture %>" alt="">
+                        </div>
+                        <div class="name">
+                            <p><%= item.username %></p>
+                        </div>
+                    </div>
+                    <div class="wrap_top_bottom two" style="height: <%= item.sum / item.fullPercent %>%">
+                        <div class="column left_column">
+                            <div class="inner_column bg-success" style="height: 100%">
+                                <div class="height_column" 
+                                     data-popup="tooltip" 
+                                     data-container="body" 
+                                     title="" 
+                                     data-original-title="Доходы <%= item.sum %> руб.">
+                                    <i class="icon-coin-dollar"></i>     
+                                </div>
+                            </div>
+                        </div>
+                        <div class="wrap_bottom no-margin" style="height: <%= item.percentage %>%">
+                            <div class="column right_column">
+                            <div class="inner_column inner_column_top bg-danger" style="height: <%= item.successPercentage %>%">
+                                <div class="height_column" 
+                                     data-popup="tooltip" 
+                                     data-container="body" 
+                                     data-original-title="Продажи <%= item.success %>">
+                                    <i class="icon-heart5"></i>
+                                </div>
+                            </div>
+                            <div class="inner_column inner_column_bottom bg-primary" style="height: <%= item.canceledPercentage %>%">
+                                <div class="height_column"
+                                     data-popup="tooltip"
+                                     data-container="body" 
+                                     data-original-title="Отказы <%= item.canceled %>">
+                                    <i class="icon-heart-broken2"></i>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            <% }) %>
+
+
+        </div>
+    </div>
+</div>

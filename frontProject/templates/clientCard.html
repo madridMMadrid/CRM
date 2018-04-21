@@ -1,0 +1,47 @@
+<li class="media panel panel-body stack-media-on-mobile">
+	<div class="media-body">
+		<h5 class="text-semibold bp-10">
+			<% console.log(arguments); %>
+			<a href="#client/<%= id %>"><%= name %></a>
+		</h5>
+		<ul class="panel-heading media-list content-group no-padding-left no-margin-bottom">
+			<li class="media">
+				<div class="media-left">
+					<i class="icon-phone2"></i>
+				</div>
+
+				<div class="media-body">
+					<h6 class="media-heading">
+						<%= phone %>
+					</h6>
+				</div>
+			</li>
+			<li class="media">
+				<div class="media-left">
+					<i class="icon-mail5"></i>
+				</div>
+
+				<div class="media-body">
+					<h6 class="media-heading">
+						<%= email %>
+					</h6>
+				</div>
+			</li>
+			<li class="media">
+				<% if(typeof question !='undefined'){ %>
+					<div class="media-left">
+						<i class="icon-megaphone"></i>
+					</div>
+
+					<div class="media-body">
+						<h6 class="media-heading">
+							<%= question %>
+						</h6>
+					</div>
+				<% } %>
+			</li>
+		</ul>
+	</div>
+	<div class="media-right text-nowrap">
+	</div>
+</li>

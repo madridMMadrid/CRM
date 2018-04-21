@@ -1,0 +1,127 @@
+<script type="text/template" id="dashboard">
+
+	<!-- Page header -->
+	<div class="page-header page-header-default">
+	    <div class="page-header-content">
+	        <div class="page-title">
+	            <h4>
+	                <span class="text-semibold">Мои задачи</span>
+	                <div class="heading-elements">
+						<button type="button" class="btn btn-default" data-toggle="modal" data-target="#dashboard-modalAddClient">Принять звонок от клиента</button>
+					</div>
+	            </h4>
+	        </div>
+	    </div>
+	</div>
+	<!-- /page header -->
+
+	<div class="content">
+		<div class="col-lg-6">
+			<h2 class="panel-heading no-margin-top no-padding-left">
+				Новые клиенты
+				<span id="dashboard-newClientsIndicator" class="badge bg-primary-400 heading-text"></span>
+			</h2>
+			<div id="dashboard-newClients">
+
+			</div>
+		</div>
+
+		<div class="col-lg-6">
+			<h2 class="panel-heading no-margin-top no-padding-left">
+				Действующие клиенты
+				<span id="dashboard-requiresAttentionClientsIndicator" class="bg-success-400 heading-text badge"></span>
+			</h2>
+			<div id="dashboard-requiresAttentionClients">
+				
+			</div>
+		</div>
+
+		<div id="dashboard-motivation" class="col-lg-4 hidden">
+			<div class="panel panel-body">
+				<div class="media no-margin-top content-group">
+					<div class="media-body">
+						<h6 class="no-margin text-semibold">Выполнение плана продаж</h6>
+						<span class="text-muted">До 1 августа</span>
+					</div>
+
+					<div class="media-right media-middle">
+						<i class="icon-cog3 icon-2x text-indigo-400 opacity-75"></i>
+					</div>
+				</div>
+
+				<div class="progress progress-micro mb-10">
+					<div class="progress-bar bg-indigo-400" style="width: 67%">
+						<span class="sr-only">67% Выполнено</span>
+					</div>
+				</div>
+			    <span class="pull-right">67%</span>
+			    Выполнено
+			</div>
+
+			<div class="panel panel-body">
+				<div class="media no-margin-top content-group">
+					<div class="media-body">
+						<h6 class="no-margin text-semibold">Продавец месяца</h6>
+						<span class="text-muted">Анна продажникова</span>
+					</div>
+
+					<div class="media-right media-middle">
+						<i class="icon-cog3 icon-2x text-indigo-400 opacity-75"></i>
+					</div>
+				</div>
+
+				<div class="progress progress-micro mb-10">
+					<div class="progress-bar bg-indigo-400" style="width: 67%">
+						<span class="sr-only">67% Выполнено</span>
+					</div>
+				</div>
+			    <span class="pull-right">67%</span>
+			    Осталось
+			</div>
+		</div>
+	</div>
+
+		<!-- popup погашения задолжности -->
+	<div id="dashboard-modalAddClient" class="modal fade in">
+		<div class="modal-dialog modal-sm">
+			<div class="modal-content">
+	            <div class="modal-header bg-primary-400">
+				    <button type="button" class="close" data-dismiss="modal">×</button>
+				    <h6 class="modal-title">Добавить клиента</h6>
+	            </div>
+	            <form class="horizontal-form" id="dashboard-addClientForm">
+	            	<div class="modal-body text-right">
+						<div class="form-group has-feedback has-feedback-left">
+							<input type="text" class="form-control input-xlg" placeholder="Имя" name="name" required/>
+							<div class="form-control-feedback">
+								<i class="icon-user"></i>
+							</div>
+						</div>
+						<div class="form-group has-feedback has-feedback-left">
+							<input type="tel" class="form-control input-xlg" placeholder="Телефон" name="phone" data-mask="+7 (999) 999-99-99" required/>
+							<div class="form-control-feedback">
+								<i class="icon-phone2"></i>
+							</div>
+						</div>
+						<div class="form-group has-feedback has-feedback-left">
+							<input type="email" class="form-control input-xlg" placeholder="E-mail" name="email" required/>
+							<div class="form-control-feedback">
+								<i class="icon-mail5"></i>
+							</div>
+						</div>
+						<div class="form-group has-feedback has-feedback-left">
+							<select class="bootstrap-select js-citySelector" data-style="btn-default btn-lg" data-width="100%">
+							</select>
+						</div>
+		            </div>
+		            <div class="modal-footer">
+		            	<button type="submit" class="btn bg-primary-400 btn-ladda btn-ladda-spinner" id="dashboard-addClientBtn" data-style="expand-left" data-spinner-color="#42a5f5" data-spinner-size="20">
+							<span class="ladda-label">Добавить</span>
+						</button>
+		            </div>
+		        </form>
+			</div>
+		</div>
+	</div>
+	<!-- end popup погашения задолжности -->
+</script>

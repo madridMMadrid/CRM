@@ -1,0 +1,8 @@
+{
+    "require": {
+        "textalk/websocket": "^1.2",
+        "wrench/wrench": "^2.0",
+        "jeremykendall/query-auth": "^3.1",
+        "firebase/php-jwt": "^5.0"
+    }
+}

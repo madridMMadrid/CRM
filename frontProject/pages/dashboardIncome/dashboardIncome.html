@@ -1,0 +1,171 @@
+<script type="text/template" id="main-template">
+	<div class="page-header page-header-default">
+	    <div class="page-header-content">
+	        <div class="page-title">
+	            <h4>
+	                <i class="icon-arrow-left52 position-left" id="goBackToGoodOldPage"></i>
+	                <span class="text-semibold">Прием баблишка</span>
+	            </h4>
+	        </div>
+	    </div>
+	</div>
+	<!-- /page header -->
+
+	<div class="content dashboardIncomeContent">
+		<div class="panel">
+			<div class="panel-heading">
+				<form class="main-search">
+				<div class="input-group content-group col-lg-12">
+					<div class="has-feedback has-feedback-left">
+						<input type="search" class="form-control input-xlg" placeholder="Найти клиента" id="dashboardIncome-searchInput">
+						<div class="form-control-feedback">
+							<i class="icon-search4 text-muted text-size-base"></i>
+						</div>
+					</div>
+				</div>
+			</form>
+			</div>
+			<div class="table-responsive">
+				<div class="infiniteScroll">
+					<table class="table table-hover">
+						<thead>
+							<tr height="70px">
+								<th>Имя</th>
+								<th>Сумма</th>
+								<th>Принято от суммы</th> 
+								<th>Пакет</th>
+								<th>Дата</th>
+								<th>Тип оплаты</th>
+								<th></th>
+							</tr>
+						</thead>
+						<tbody class="js-wrapp_dashboardIncome"></tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="dashboardIncomeUserBlock" class="modal fade in" data-time_inside_id="">
+		<div class="modal-dialog modal-md">
+			<div class="modal-content">
+	            <div class="modal-header bg-primary">
+				    <button type="button" class="close" data-dismiss="modal">×</button>
+				    <h6 class="modal-title">Блокировка клиента</h6>
+	            </div>
+	            <div class="modal-body">
+	            	<div class="panel panel-body text-center">
+						<h6 class="no-margin text-semibold">Вы уверены?</h6>
+						<div class="wrapp_button_call" style="display: flex; justify-content: space-around;">
+				        	<button type="button" class="btn btn-default btn-float col-md-4" data-dismiss="modal">
+				        		<i class="icon-blocked"></i>
+				        		<span>Отмена</span>
+				        	</button>
+				        	<button type="button" class="btn btn-success btn-float col-md-4">
+								<i class="icon-checkmark3"></i>
+								<span class="ladda-label">Заблокировать</span>
+						</button>
+						</div>
+					</div>
+	            </div>
+			</div>
+		</div>
+	</div>
+</script>
+
+<script type="text/template" id="income-payments">
+	<% _.each(payments, function(item, index){ %>
+		<tr data-paymentId="<%= item.paymentId %>" data-clientId="<%= item.clientId %>" class="inside_id">
+			<td>
+				<div class="dropdown dropup">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true"><%= item.clientName %><span class="caret"></span></a>
+					<ul class="dropdown-menu dropdown-menu-right">
+						<li><a href="#"><%= item.email %></a></li>
+						<li><a href="#"><%= item.phone %></a></li>
+						
+					</ul>
+				</div>								
+			</td>
+			<td class="dashboardIncome_amount_true"><%= item.amount %></td>
+			<td><input type="number" class="form-control dashboardIncome_amount" value="<%= item.amount %>" placeholder="<%= item.amount %>"></td>
+			<td>
+				<div class="media-left">
+					<span class="btn btn-rounded btn-icon btn-xs 
+								<%= item.type == 'Silver' ? 'bg-grey-300' : 'bg-orange-400' %>">
+						<span class="letter-icon">
+							<%= item.type == 'Silver' ? 'S' : 'G' %>
+						</span>
+					</span>
+				</div>
+				<div class="media-right" style="vertical-align: middle;">
+					<div class="media-heading">
+						<span class="letter-icon-title"><%= item.packageName %></span>
+					</div>
+				</div>
+			</td>
+			<td><%= item.createdAt %></td>
+			<td>
+				<ul class="clients_radio dashboardIncome no-padding no-margin">
+					<li>
+						<label class="clients_radio_icon0 no-margin" data-popup="tooltip" data-container="body" data-original-title="Наличными">
+							<input 
+								id="client_to_pay0<%= item.paymentId %>" 
+								<%= item.paymentType == 1 ? 'checked' : '' %>
+								type="radio" 
+								name="<%= item.paymentId %>" 
+								value="1" 
+								class="clients_radio_icon_change">
+								<i class="icon-coin-dollar"></i>
+						</label>
+
+					</li>
+					<li>
+						<label class="clients_radio_icon1 no-margin" data-popup="tooltip" data-container="body" data-original-title="Картой">
+							<input 
+								id="client_to_pay1<%= item.paymentId %>" 
+								<%= item.paymentType == 2 ? 'checked' : '' %>
+								type="radio"
+								name="<%= item.paymentId %>" 
+								value="2" 
+								class="clients_radio_icon_change">
+								<i class="icon-credit-card"></i>
+						</label>
+
+					</li>
+				</ul>
+			</td>
+			<td>
+				<ul class="clients_radio dashboardIncome no-padding no-margin ">
+					<li>
+						<button type="button" class="btn btn-default btn-ladda btn-ladda-spinner confirmPayment" data-spinner-size="20" data-spinner-color="#333" data-style="expand-left">
+							<span class="ladda-label">
+								<i class="icon-checkmark4"></i>
+							</span>
+						</button>
+					</li>
+					<li>
+						<div class="dropdown dropup">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+								<button type="button" class="btn btn-default" data-spinner-size="20">
+									<span class="ladda-label">
+										<i class="icon-user-block"></i>
+									</span>
+								</button>
+							</a>	
+							<ul class="dropdown-menu dropdown-menu-right" style="min-width: 60px;">
+								<li class="text-center"> 
+									<button type="button" class="btn btn-danger dashboardIncomeUserBlock">
+										<span class="ladda-label">
+											<i class="icon-user-block"></i>
+										</span>
+									</button>
+								</li>
+							</ul>
+						</div>
+						
+					</li>
+				</ul>
+			</td>
+		</tr>
+	<% }) %>
+</script>
+

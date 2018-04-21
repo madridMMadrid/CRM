@@ -1,0 +1,73 @@
+
+<% 
+	for (var i=0; i <= data.length -1; i++){ 
+	var item = data[i];
+%>
+
+<tr>
+	<td class="text-center">
+		<div class="text-muted text-size-small">
+			<span>
+				<% if (item.actionType == 0) { %>
+					<i class="icon-database-refresh" data-popup="tooltip" data-container="body" data-original-title="Смена пакета"></i>
+				<% } else if (item.actionType == 1) { %>
+					<i class="icon-database-time2" data-popup="tooltip" data-container="body" data-original-title="Продление"></i>
+				<% } else if (item.actionType == 2) { %>
+					<i class="icon-database-add" data-popup="tooltip" data-container="body" data-original-title="Добавление"></i>
+				<% } else if (item.actionType == 3) { %>
+					<i class="icon-database-remove" data-popup="tooltip" data-container="body" data-original-title="Отмена"></i>
+				<% } %>
+			</span>
+		</div>
+	</td>
+	<td>
+		<div class="media-left">
+			<span class="btn btn-rounded btn-icon btn-xs 
+						<%= item.type == 'Silver' ? 'bg-grey-300' : 'bg-orange-400' %>">
+				<span class="letter-icon">
+					<%= item.type == 'Silver' ? 'S' : 'G' %>
+				</span>
+			</span>
+		</div>
+
+		<div class="media-body" style="vertical-align: middle;">
+			<div class="media-heading">
+				<span class="letter-icon-title"><%= item.name %></span>
+			</div>
+		</div>
+	</td>
+	<td class="text-center">
+		<div class="text-muted text-size-small">
+			<span>
+				<% if (item.amount == null) { %>
+					<i class="icon-dash"></i>
+				<% } else { %>
+					<%= item.amount %>
+				<% } %>
+			</span>
+		</div>
+	</td>
+	<td class="text-center">
+		<div class="text-muted text-size-small">
+			<span>
+				<% if(item.paymentType == 1) { %>
+					<i class="icon-coin-dollar" data-popup="tooltip" data-container="body" data-original-title="Наличными"></i>
+				<% } else if (item.paymentType == 2) { %>
+					<i class="icon-credit-card" data-popup="tooltip" data-container="body" data-original-title="Картой"></i>
+				<% } else if (item.paymentType == 3) { %>
+					<i class="icon-person" data-popup="tooltip" data-container="body" data-original-title="Онлайн"></i>
+				<% } else { %>
+					<i class="icon-dash"></i>	
+				<% } %>		
+			</span>
+		</div>
+	</td>
+	<td>
+		<div class="text-muted text-size-small">
+			<span>
+				<%= item.updatedAt %>
+			</span>
+		</div>
+	</td>
+</tr>
+<% } %>

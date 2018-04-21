@@ -1,0 +1,84 @@
+<!-- Page header -->
+<template id="baseShit">
+	<div class="page-header page-header-default">
+	    <div class="page-header-content">
+	        <div class="page-title">
+	            <h4>
+	                <span class="text-semibold">База клиентов</span>
+	            </h4>
+	        </div>
+	    </div>
+	</div>
+	<!-- /page header -->
+	<div class="content">
+		<div class="panel panel-flat">
+			<div class="panel-body">
+				<form action="#" class="main-search">
+					<div class="input-group content-group col-lg-12">
+						<div class="has-feedback has-feedback-left">
+							<input type="search" class="form-control input-xlg" placeholder="Имя клиента, номер телефона или email" id="clientDatabase-searchInput">
+							<div class="form-control-feedback">
+								<i class="icon-search4 text-muted text-size-base"></i>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+		<div class="infiniteScroll">
+			<div id="clientDatabase-clientList" class="col-lg-12 no-padding"></div>
+		</div>	
+	</div>
+</template>
+
+<script type="text/template" id="otherShit">
+	<!-- <div id="test" class="col-lg-12 no-padding"></div> -->
+	<% _.each(users, function(item, index, ar){ %>
+		<li class="media panel panel-body stack-media-on-mobile no-margin">
+			<div class="media-body">
+				<h5 class="text-semibold bp-10">
+					<a href="#client/<%= item.id %>"><%= item.name %></a>
+				</h5>
+				<ul class="panel-heading media-list content-group no-padding-left no-margin-bottom">
+					<li class="media">
+						<div class="media-left">
+							<i class="icon-phone2"></i>
+						</div>
+
+						<div class="media-body">
+							<h6 class="media-heading">
+								<%= item.phone %>
+							</h6>
+						</div>
+					</li>
+					<li class="media">
+						<div class="media-left">
+							<i class="icon-mail5"></i>
+						</div>
+
+						<div class="media-body">
+							<h6 class="media-heading">
+								<%= item.email %>
+							</h6>
+						</div>
+					</li>
+					<li class="media">
+						<% if(typeof item.question !='undefined'){ %>
+							<div class="media-left">
+								<i class="icon-megaphone"></i>
+							</div>
+
+							<div class="media-body">
+								<h6 class="media-heading">
+									<%= item.question %>
+								</h6>
+							</div>
+						<% } %>
+					</li>
+				</ul>
+			</div>
+			<div class="media-right text-nowrap">
+			</div>
+		</li>
+	<% }) %>
+</template>

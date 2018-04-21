@@ -1,0 +1,971 @@
+<!-- Page header -->
+<script type="text/template" id="client-main-page">
+	<div class="page-header page-header-default">
+	    <div class="page-header-content">
+	        <div class="page-title">
+	            <h4>
+	                <i class="icon-arrow-left52 position-left" id="goBackToGoodOldPage"></i>
+	                <span class="text-semibold"><%= name %></span>
+	            </h4>
+	        </div>
+	        <div class="heading-elements">
+				<div class="heading-btn-group">
+					<a href class="btn btn-link btn-float has-text client_end_call" data-toggle="modal" data-target="#client-activateCertificate">
+						<i class="icon-certificate text-primary"></i>
+						<span>Сертификат</span>
+					</a>
+					<a href class="btn btn-link btn-float has-text client_end_call" data-toggle="modal" data-target="#client_end_call">
+						<i class="icon-phone-slash text-primary"></i>
+						<span>Завершить</span>
+					</a>
+				</div>
+			</div>
+	    </div>
+	</div>
+	<!-- page header -->
+	<div class="content">
+		<div class="col-lg-4">
+			<div class="panel panel-flat">
+				<div class="panel-heading">
+					<h6 class="panel-title">
+						Контакты
+						<a class="heading-elements-toggle">
+							<i class="icon-more"></i>
+						</a>
+					</h6>
+				</div>
+
+				<div class="list-group no-border no-padding-top">
+					<li href="#" class="list-group-item"><i class="icon-phone2"></i><%= phone %></li>
+					<li href="#" class="list-group-item"><i class="icon-mail5"></i> <%= email %></li>
+					<li href="#" class="list-group-item"><i class="icon-gift"></i> <%= bonuses %></li>
+				</div>
+			</div>
+
+			<!-- проверяем задолжность клиента -->
+			<% if (debt > 0) { %>
+				<div class="panel panel-flat">
+				    <div class="panel-heading">
+				    	<div class="media">
+							<div class="media-left media-middle">
+								<h6 class="panel-title">Задолженность: <a class="heading-elements-toggle"><i class="icon-more"></i></a></h6>
+							</div>
+							<div class="media-body media-middle">
+								<%= debt %>
+							</div>
+							<div class="media-body right text-right">
+								<button type="button" class="btn btn-danger" id="client_openDebtpaymentPopup" <%= isDebtHold == 1 ? 'disabled' : '' %> data-toggle="modal" data-target="#client-modalChangeDebt"><%= isDebtHold == 1 ? 'Ожидается оплата' : 'Погасить' %></button>
+							</div>
+						</div>
+				    </div>
+				</div>
+			<% } %>
+			<!-- end проверяем задолжность клиента -->
+
+			<div id="client-packageListContainer"></div>
+
+			<div class="panel panel-flat">
+				<div class="panel-heading">
+					<h6 class="panel-title">Комментарии</h6>
+				</div>
+
+				<div class="panel-body">
+					<ul class="media-list chat-list content-group" id="tasksList">
+
+						<% for (var i=comments.length-1, len=-1; i>len; i--){ %>		
+							<li class="media <%= comments[i].isMyComment ? 'reversed' : '' %> ">
+								<div class="media-body">
+									<div class="media-content">
+											<%= comments[i].comment  %>
+									</div>
+									<span class="media-annotation display-block mt-10"><%= comments[i].date %></span>
+								</div>
+								<div class="media-right">
+									<a href="assets/images/placeholder.jpg">
+										<img src="assets/images/placeholder.jpg" class="img-circle img-md" alt="">
+									</a>
+								</div>
+							</li>
+						<% } %>
+					</ul>
+
+			    	<!-- <textarea id="taskText" name="enter-message" value="" class="form-control content-group" rows="3" cols="1" placeholder="Текст комментария..."></textarea> -->
+			    	<textarea id="taskInput" name="enter-message" type="text" class="form-control content-group" placeholder="Введите коментарий" value=""></textarea> 
+
+			    	<div class="row">
+			    		<div class="col-xs-12 text-right">
+				                <button type="button" class="btn btn-primary btn-ladda btn-ladda-spinner js-clients_comment-add">
+			                		<span class="ladda-label">Добавить коментарий</span>
+			                	</button>
+			    		</div>
+			    	</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-lg-8">
+			<!-- история ахуительных покупок -->
+				<div class="panel-body no-padding panel">
+					<div class="table-responsive">
+						<div class="panel-group panel-group-control content-group-lg client_getHistory no-margin">
+							<div class="currentPurchaseHistory panel-white">
+								<a data-toggle="collapse" href="#getHistory" aria-expanded="false">
+									<div class="panel-heading ">
+										<h6 class="media-left media-middle">
+											История
+										</h6>
+									</div>
+								</a>
+
+								<div id="getHistory" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+									<div class="panel-heading">
+										<form class="main-search">
+											<div class="input-group content-group col-lg-12">
+												<div class="has-feedback has-feedback-left">
+													<input type="search" class="form-control input-xlg" placeholder="Найти клиента" id="getHistory-searchInput">
+													<div class="form-control-feedback">
+														<i class="icon-search4 text-muted text-size-base"></i>
+													</div>
+												</div>
+											</div>
+										</form>
+									</div>
+									<div class="panel-body no-padding">
+										<div class="infiniteScroll">
+											<div class="clearfix">
+												<table class="table">
+													<thead>
+														<tr>
+															<th>Действие</th>
+															<th style="width:45%;">Пакет</th>
+															<th>Сумма</th>
+															<th>Оплата</th>
+															<th>Дата</th>
+														</tr>
+													</thead>
+													<tbody  id="currentPurchaseHistory" class="no-border"></tbody>
+												</table>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			<!-- end история ахуительных покупок -->
+				
+			<!-- колендарь доставки -->
+			<div class="panel panel-flat" style="box-sizing: border-box;">
+				<ul class="tab_content no-margin no-padding">
+					<% _.each(packages, function(item, i, ar){ %>
+						<li> 
+							<div class="panel-heading">
+								<h6 class="panel-title">Календарь доставки</h6>
+								<div class="heading-elements">
+									<ul class="icons-list no-margin">
+										<li id="client-addressList-<%= item.id %>"></li>
+										<li id="client-timeList-<%= item.id %>"></li>
+									</ul>
+								</div>
+							</div>
+							<div class="panel-body" style="box-sizing: border-box;">
+								<div class="calendar-width-fixery">
+									<div class="fullcalendar-event-colors js-clientCalendar"></div>
+								</div>
+							</div>
+						</li>
+					<% }); %>
+				</ul>
+			</div>
+		</div>
+		<!-- end колендарь доставки -->
+	</div>
+
+	<!-- popup погашения задолжности -->
+	<div id="client-modalChangeDebt" class="modal fade">
+		<div class="modal-dialog modal-sm">
+			<div class="modal-content">
+	            <div class="modal-header bg-danger">
+				    <button type="button" class="close" data-dismiss="modal">×</button>
+				    <h6 class="modal-title">Погасить задолжность</h6>
+	            </div>
+	            <div class="panel-body input_debt">
+	            	<input type="number" class="form-control popup_debt" value="<%= debt %>" placeholder="<%= debt %>">
+	            </div>	
+	            <div class="panel-body no-border js-client_debt">
+					<div class="clients_radio_extend">
+						<label class="no-margin-left">
+					    	<input type="radio" name="client_payment" value="1" checked="">
+					    	<i class="icon-coin-dollar"></i>
+					    </label>
+
+					    <label>
+					    	<input type="radio" name="client_payment" value="2">
+					    	<i class="icon-credit-card"></i>
+					    </label>
+
+					    <label class="no-margin-right">
+					    	<input type="radio" name="client_payment" value="3">
+					    	<i class="icon-person"></i>
+					    </label>
+					</div>
+				</div>
+	            <div class="modal-body text-right">
+					<button type="button" class="btn btn-default col-sm-3" data-dismiss="modal">Отмена</button>
+					<button type="button" class="btn bg-danger btn-ladda btn-ladda-spinner" id="client_deptBillSubmit"  data-style="expand-left" data-spinner-color="#fff" data-spinner-size="20"><span class="ladda-label">Высчитать счет за задолжность</span></button>
+	            </div>
+			</div>
+		</div>
+	</div>
+	<!-- end popup погашения задолжности -->
+
+
+	<!-- popup добавление адреса доставки -->
+	<div id="client-modalAddAddress" class="modal fade in">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+	            <div class="modal-header">
+				    <button type="button" class="close" data-dismiss="modal">×</button>
+				    <h6 class="modal-title">Добавить адрес доставки</h6>
+	            </div>
+	            <div class="wrapper_translit_form">
+					<div class="modal-body">
+						<div class="modal-body">
+							<div class="wrap_change">
+								<div class="col-md-8">
+									<div class="client-addressMap" id="client-addAddressMap">
+										
+									</div>	
+								</div>
+								<div class="col-md-4">
+									<form class="main-search">
+										<div class="input-group content-group col-lg-12">
+											<div class="has-feedback has-feedback-left">
+												<input type="search" class="form-control input-xlg" placeholder="Найти адрес" id="client-addAddressMapSearch">
+											</div>
+										</div>
+									</form>
+									<form class="form-horizontal" id="addAddressForm">
+										<fieldset class="content-group js-addAddressPopupInfoBlock">
+											<legend class="text-bold">Адрес</legend>
+
+											<div class="form-group">
+												<label class="control-label col-lg-4">Город</label>
+												<div class="col-lg-8">
+													<span class="js-address_city" name="city"></span>
+												</div>
+											</div>
+
+											<div class="form-group">
+												<label class="control-label col-lg-4">Улица</label>
+												<div class="col-lg-8">
+													<span class="js-address_street" name="street"></span>
+												</div>
+											</div>
+
+											<div class="form-group">
+												<label class="control-label col-lg-4">Дом</label>
+												<div class="col-lg-8">
+													<span class="js-address_house" name="building"></span>
+												</div>
+											</div>
+
+											<div class="form-group">
+												<label class="control-label col-lg-4">Офис/квартира</label>
+												<div class="col-lg-8">
+													<input type="number" name="flat" class="js-address_paradnaya form-control"/>
+												</div>
+											</div>
+
+											<div class="form-group">
+												<label class="control-label col-lg-4">Подъезд</label>
+												<div class="col-lg-8">
+													<input type="number" name="entrance" class="js-address_room form-control"/>
+												</div>
+											</div>
+
+											<div class="form-group">
+												<label class="control-label col-lg-4">Комментарий курьеру</label>
+												<div class="col-lg-8">
+													<input type="text" name="comment" class="js-address_comment form-control"/>
+												</div>
+											</div>
+										</fieldset>
+									</form>
+								</div>
+				            </div>
+			    		</div>
+			    	</div>
+		            <div class="modal-footer">
+		             	<ul class="pager text-right">
+							<li class="next"><button type="button" class="btn btn-default" id="addAddress">Добавить</button></li>
+						</ul>
+		            </div>
+				</div>
+			</div>
+			</div>
+		</div>
+	<!-- end popup добавление адреса доставки -->
+
+	<!-- popup завершение звонка -->
+	<div id="client_end_call" class="modal fade in">
+		<div class="modal-dialog modal-md">
+			<div class="modal-content">
+	                <div class="modal-header bg-primary">
+					    <button type="button" class="close" data-dismiss="modal">×</button>
+					    <h6 class="modal-title">Завершить звонок</h6>
+	                </div>
+	               	<div class="modal-body">
+	               		<div class="panel panel-body border-top-primary text-center">
+							<h6 class="no-margin text-semibold">Звонок завершен</h6>
+							<p class="text-muted content-group-sm">Результат</p>
+							<div class="wrapp_button_call" style="display: flex; justify-content: space-around;">
+				            	<button type="button" class="btn btn-danger btn-float col-md-4" data-dismiss="modal"><i class="icon-blocked"></i> <span>Отказ</span></button>
+				            	<button type="button" class="btn btn-success btn-float btn-loading col-md-4" data-loading-text="<i class='icon-spinner4 spinner'></i> <span>Update</span>" id="end_call_buying"><i class="icon-checkmark3"></i> <span>Покупка</span></button>
+							</div>
+						</div>
+	               	</div>
+	                <!-- <div class="modal-footer text-right">
+					    <button type="button" class="btn btn-default col-sm-3" data-dismiss="modal">Отмена</button>
+					    <button type="button" class="btn bg-primary btn-ladda btn-ladda-spinner" id="client_deptBillSubmit"  data-style="expand-left" data-spinner-color="#fff" data-spinner-size="20"><span class="ladda-label">Высчитать счет за задолжность</span></button>
+	                </div> -->
+				
+			</div>
+		</div>
+	</div>
+
+<div id="client-activateCertificate" class="modal fade in">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header bg-success">
+				<button type="button" class="close" data-dismiss="modal">×</button>
+				<h5 class="modal-title">Активировать сертификат</h5>
+			</div>
+			
+			<div class="wrapper_translit_form">
+				<div class="modal-body">
+					<div class="modal-body">
+					<div class="wrap_change">
+						<div class="inner_change_wrappwer_left col-md-6">
+							<div class="panel-heading">
+								<h6 class="panel-title">Номер сертификата</h6>
+							</div>
+							<div class="panel-body">
+								<form class="form-horizontal">
+									<div class="form-group has-feedback">
+										<input type="text" class="form-control" name="certificateNumber" placeholder="" id="client-certificateNumberInput">
+										<div class="form-control-feedback" style="opacity:0;">
+											<i class="icon-spinner2 spinner"></i>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+						<div class="innere_change_wrapper_right col-md-6">
+							<div class="panel-heading">
+								<h6 class="panel-title">Сертификат</h6>
+							</div>
+							<div class="panel-body" id="fetchCertificateContainer">
+								
+							</div>
+						</div>
+	            </div>
+	        </div>
+		     </div>
+		     <div class="modal-footer">
+		      	<ul class="pager">
+					<li class="next pull-right">
+						<button type="button" class="btn btn-default btn-ladda btn-ladda-spinner js-activateCertificate" data-spinner-size="20" data-spinner-color="#333" data-style="expand-left">
+							<span class="ladda-label">Активировать</span>
+						</button>
+					</li>
+				</ul>
+		     </div>
+		</div>
+	</div>
+</div>
+	<!-- end popup завершение звонка -->
+</script>
+
+<script type="text/template" id="foreshowAddCertificateTemplate">
+	<div class="panel panel-flat">
+		<div class="list-group no-border panel-body">
+			<li class="list-group-item col-lg-12 no-padding-right">
+				<div class="col-lg-4 no-padding">
+					Cкидка:
+				</div>
+				<div class="col-lg-1"></div>
+				<div class="col-lg-7">
+					<%= certificateDiscount %><%= type%>
+				</div>
+			</li>
+			<li class="list-group-item col-lg-12 no-padding-right">
+				<div class="col-lg-4 no-padding">
+					Действует до:
+				</div>
+				<div class="col-lg-1"></div>
+				<div class="col-lg-7">
+					<%= certificateExpiration %>
+				</div>
+			</li>
+			<li class="list-group-item col-lg-12 no-padding-right">
+				<div class="col-lg-4 no-padding">
+					Активирован:
+				</div>
+				<div class="col-lg-1"></div>
+				<div class="col-lg-7">
+					<%= isActive %>
+				</div>
+			</li>
+			<li class="list-group-item col-lg-12 no-padding-right">
+				<div class="col-lg-4 no-padding">
+					Комментарий:
+				</div>
+				<div class="col-lg-1"></div>
+				<div class="col-lg-7">
+					<%= certificateComment %>
+				</div>
+			</li>
+		</div>
+	</div>
+</script>
+
+<script type="text/x-template" id="client-addressListBase">
+	<% if(typeof renderRaw == 'undefined'){ %>
+		<li data-popup="tooltip" data-container="body" data-original-title="Адрес доставки">
+			<a class="btn btn-default" data-toggle="modal" data-target="#client-modalAddAddress-<%= id %>">
+				<i class="icon-location3"></i>
+			</a>
+		</li>
+
+		<div id="client-modalAddAddress-<%= id %>" class="modal fade in">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">×</button>
+						<h5 class="modal-title">Адрес доставки</h5>
+					</div>
+
+					<div class="modal-body">
+						<form class="form-horizontal js-add-time-form">
+
+						</form>
+					</div>
+
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary js-addTimePopup">Добавить</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	<% } else { %>
+		<div class="form-horizontal js-add-time-form"></div>
+	<% } %>
+</script>
+<script type="text/x-template" id="client-addAddressNode-template">
+	<div class="selectNode baseMarginTop">
+		<div class="row">
+			<div class="form-group col-lg-6">
+				<div class="multi-select-full multi-select-inline">
+					<select class="multiselect-full" multiple="multiple" required>
+						<option value="1">Пн</option>
+						<option value="2">Вт</option>
+						<option value="3">Ср</option>
+						<option value="4">Чт</option>
+						<option value="5">Пт</option>
+						<option value="6">Сб</option>
+						<option value="7">Вс</option>
+					</select>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-6">
+				<input type="text" name="address" class="form-control" placeholder="Адрес"/>
+			</div>
+			<div class="col-lg-3">
+				<input type="number" name="entrance" class="form-control" placeholder="Подъезд" />
+			</div>
+			<div class="col-lg-3">
+				<input type="number" name="flat" class="form-control" placeholder="Квартира" />
+			</div>
+			<div class="col-lg-12">
+				<input type="text" name="shrimpComment" class="form-control" placeholder="Комментарий курьеру" />
+			</div>
+		</div>
+	</div>
+</script>
+
+<script type="text/template" id="client-addTimeForm-template">
+	<% if(typeof renderRaw == 'undefined'){ %>
+		<li data-popup="tooltip" data-container="body" title="" data-original-title="Время доставки">
+			<a class="btn btn-default" data-toggle="modal" data-target="#client-modalAddTime-<%= id %>">
+				<i class="glyphicon glyphicon-time"></i>
+			</a>
+		</li>
+
+		<div id="client-modalAddTime-<%= id %>" class="modal fade in">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">×</button>
+						<h5 class="modal-title">Время доставки</h5>
+					</div>
+
+					<div class="modal-body">
+						<form class="form-horizontal js-add-time-form">
+
+						</form>
+					</div>
+
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary js-addTimePopup">Добавить</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	<% } else { %>
+		<div class="form-horizontal js-add-time-form"></div>
+	<% } %>
+</script>
+
+<script type="text/template"  id="client-addTimeNode-template">
+	<div class="selectNode">
+		<div class="form-group col-lg-6">
+			<div class="multi-select-full multi-select-inline">
+				<select class="multiselect-full" multiple="multiple" required>
+					<option value="1">Пн</option>
+					<option value="2">Вт</option>
+					<option value="3">Ср</option>
+					<option value="4">Чт</option>
+					<option value="5">Пт</option>
+					<option value="6">Сб</option>
+					<option value="7">Вс</option>
+				</select>
+			</div>
+		</div>
+		<div class="col-lg-6">
+			<div class="form-group col-lg-3">
+				<input class="form-control" type="time" name="timeFrom" required/>
+			</div>
+			<div class="form-group col-lg-1 text-center">
+				-
+			</div>
+			<div class="form-group col-lg-3">
+				<input class="form-control" type="time" name="timeTo" required disabled=""/>
+			</div>
+			<div class="form-group col-lg-1 text-center"></div>
+			<div class="form-group col-lg-6">
+				<label>
+					<input class="" type="checkbox" name="shortTimeInterval">
+					Экспресс доставка
+				</label>
+			</div>
+		</div>
+	</div>
+</script>
+
+<script type="text/template" id="client-packageTemplate">
+	<div class="panel panel-flat clearfix">
+		<div class="panel-heading">
+			<h6 class="panel-title">
+				Пакеты
+				<a class="heading-elements-toggle">
+					<i class="icon-more"></i>
+				</a>
+			</h6>
+			<div class="heading-elements">
+				<ul class="icons-list">
+					<li data-popup="tooltip" data-container="body" data-original-title="Добавить пакет" >
+						<a data-toggle="modal" data-target="#client-modalAddPackage" class="js-popupAddPackage">
+							<i class="icon-plus-circle2"></i>
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+
+		<!-- выводим пакеты клиента -->
+		<div class="clearfix">
+			<table class="table">
+				<tbody>
+					<% _.each(packages, function(item, i, ar){ %>
+						<tr class="js-client-getPackageId" data-id="<%= i %>" data-packageid="<%= item.packageId %>">
+							<td class="js-client-getPackageId_first_td">
+								<div class="media-left">
+									<span class="btn btn-rounded btn-icon btn-xs 
+												<%= item.type == 'Silver' ? 'bg-grey-300' : 'bg-orange-400' %>">
+										<span class="letter-icon">
+											<%= item.type == 'Silver' ? 'S' : 'G' %>
+										</span>
+									</span>
+									<span class="badge badge-success media-badge <%= item.badgeColor %>"><%= item.daysRemain %></span>
+								</div>
+
+								<div class="media-body">
+									<div class="media-heading">
+										<span class="letter-icon-title"><%= item.packageName %></span>
+									</div>
+
+									<div class="text-muted text-size-small">
+										<i class="icon-comment position-left"></i>
+										<span class="js-client_package-comment" contenteditable="true"><%= item.comment %></span>
+									</div>
+								</div>
+							</td>
+							<td>
+								<ul class="icons-list">
+									<li class="dropdown">
+										<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="icon-menu7"></i></a>
+										<ul class="dropdown-menu dropdown-menu-right">
+											<% if (!item.isHold) { %>
+												<li>
+													<a class="js-popupProlongPackage" data-toggle="modal" data-target="#client-modalProlongationPackage">
+														<i class="icon-forward3"></i>Продлить
+													</a>
+												</li>
+												<li>
+													<a class="popupChangePackage" data-toggle="modal" data-target="#client-modalChangePackage">
+														<i class="icon-loop3"></i>Сменить
+													</a>
+												</li>
+											<% } else { %>
+												<li>
+													<a class="noevents"><%= item.action.name %></a>
+												</li>
+												<li>
+													<a class="noevents"><%= item.action.date %></a>
+												</li>
+												<li class="divider"></li>
+												<li>
+													<a class="deletePackage">
+														<i class="icon-subtract text-danger-600"></i>Отмена
+													</a>
+												</li>
+											<% } %>
+										</ul>
+									</li>
+								</ul>
+							</td>
+						</tr>
+					<% }); %>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<!-- popup смены пакета клиента -->
+	<div id="client-modalChangePackage" class="modal fade in"></div>
+	<!-- end  блок смены пакета клиента -->
+	<!-- popup добавлене пакета клиента -->
+	<div id="client-modalAddPackage" class="modal fade in"></div>
+	<!-- end popup добавлене пакета клиента -->
+	<!-- popup продления пакета клиента -->
+	<div id="client-modalProlongationPackage" class="modal fade in"></div>
+	<!-- end popup продления пакета клиента -->
+	<!-- end выводим пакеты клиента -->
+</script>
+
+<script type="text/template" id="client-changePackagePopupTemplate">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header bg-success">
+				<button type="button" class="close" data-dismiss="modal">×</button>
+				<h5 class="modal-title">Смена пакета</h5>
+			</div>
+
+			
+			<div class="wrapper_translit_form">
+				<div class="modal-body">
+					<div class="modal-body">
+					<div class="wrap_change">
+						<div class="inner_change_wrappwer_left col-md-6">
+							<div class="panel-heading">
+								<h6 class="panel-title">Сейчас<a class="heading-elements-toggle"><i class="icon-more"></i></a></h6>
+								<div class="heading-elements"></div>
+							</div>
+							<div class="table-responsive">
+								<table class="table">
+									<tbody>
+										<tr>
+											<td>
+												<div class="media-left media-middle">
+													<div class="btn btn-rounded btn-icon btn-xs <%= type == 'Silver' ? 'bg-grey-300' : 'bg-orange-400' %>">
+														<span class="letter-icon"><%= type == 'Silver' ? 'S' : 'G' %></span>
+													</div>
+												</div>
+												<div class="media-body">
+													<div class="media-heading">
+														<div class="letter-icon-title"><%= packageName %></div>
+													</div>
+													<div class="text-muted text-size-small"><i class="icon-checkmark3 text-size-mini position-left"></i> текущий пакет</div>
+												</div>
+											</td>
+											<td align="center">
+												<h6 class="text-semibold no-margin">
+													<p><%= daysRemain %> Дней</p>
+												</h6>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>	
+						</div>
+						<div class="innere_change_wrapper_right col-md-6">
+							<div class="panel-heading">
+								<h6 class="panel-title">Станет<a class="heading-elements-toggle"><i class="icon-more"></i></a></h6>
+								<div class="heading-elements"></div>
+							</div>
+							<form class="main-search">
+								<div class="input-group content-group col-lg-12">
+									<div class="has-feedback has-feedback-left">
+										<input type="search" class="form-control input-xlg" placeholder="Найти пакет" id="changePackage-searchInput">
+										<div class="form-control-feedback">
+											<i class="icon-search4 text-muted text-size-base"></i>
+										</div>
+									</div>
+								</div>
+							</form>
+							<!-- <div class="Package js-client-packageList"></div> -->
+							<div class="table-responsive">
+								<div class="panel-group panel-group-control content-group-lg js-client-packageList" id="accordion-control"></div>
+							</div>
+					</div>
+	            </div>
+	        </div>
+	            <div class="modal-footer">
+	             	<ul class="pager">
+					    <button type="button" class="btn btn-default col-sm-3" data-dismiss="modal">Отмена</button>
+						<li class="next pull-right">
+							<button type="button" class="btn btn-default btn-ladda btn-ladda-spinner js-sendChangePackage" data-spinner-size="20" data-spinner-color="#333" data-style="expand-left" disabled>
+								<span class="ladda-label">Отправить</span>
+							</button>
+						</li>
+					</ul>
+	            </div>
+			</div>
+		</div>
+	</div>
+</script>
+
+<script type="text/template" id="client-addPackageTemplate">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+	        <div class="modal-header bg-success">
+			    <button type="button" class="close" data-dismiss="modal">×</button>
+			    <h6 class="modal-title">Добавить пакет</h6>
+	        </div>
+	        <div class="modal-body">
+	            <form class="steps-basic" action="#">
+					<h6>Пакет</h6>
+					<fieldset>
+						<div class="row">
+							<div class="panel panel-flat">
+								<div class="panel-body">
+									<div class="input-group content-group col-lg-12">
+										<div class="has-feedback has-feedback-left">
+											<input type="search" class="form-control input-xlg" placeholder="Добавить пакет" id="addPackage-searchInput">
+											<div class="form-control-feedback">
+												<i class="icon-search4 text-muted text-size-base"></i>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="wrap_change">
+								<div class="clearfix">
+									<table class="table">
+										<tbody class="panel-group panel-group-control js-client-addPackageList js-client-packageList" id="accordion-control_addPackage">
+										
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</fieldset>
+
+					<h6>Адрес доставки</h6>
+					<fieldset>
+						<div class="js-addressList-component"></div>
+					</fieldset>
+
+					<h6>Время доставки</h6>
+					<fieldset>
+						<div class="js-timeList-component"></div>
+					</fieldset>
+				</form>
+			</div>
+			<!-- /basic setup -->
+	        </div>
+	        <!-- <div class="modal-body text-right">
+			  	<button type="button" class="btn bg-success" id="client-addPackageBtn" disabled="disabled"><span class="ladda-label">Добавить</span></button>
+	        </div> -->
+		</div>
+	</div>
+</script>
+
+<script type="text/template" id="client-packageParams">
+	<form>
+		<div class="panel-body col-md-4 no-padding">
+			<div class="panel-body no-padding js-mainChangePackageNode">
+				<p>Продлить, на количество дней: </p>
+				<ul class="pagination-rounded clients_radio no-padding">
+					<% 
+						for(var i=0,len=actions.options.length;i<len;i++){ 
+						var item = actions.options[i];
+					%>
+
+						<li>
+				    		<label data-popup="tooltip" data-container="body" data-original-title="Продлить на <%= item.packageLength %> дней">
+				    			<input type="radio" name="client_priceId" value="<%= item.price %>" <%= i == 0 ? 'checked' : '' %>>
+				    			<span><%= item.packageLength %></span>
+				    		</label>
+				    	</li>
+					<% } %>
+				</ul>
+			</div>
+			<div class="panel-body no-border no-padding">
+				<div class="clients_radio_extend">
+				    <label class="no-margin-left" data-popup="tooltip" data-container="body" data-original-title="Наличными">
+				    	<input type="radio" name="client_payment" value="1" checked>
+				    	<i class="icon-coin-dollar"></i>
+				    </label>
+
+				    <label data-popup="tooltip" data-container="body" data-original-title="Картой онлайн">
+				    	<input type="radio" name="client_payment" value="2">
+				    	<i class="icon-credit-card"></i>
+				    </label>
+
+				    <label class="no-margin-right" data-popup="tooltip" data-container="body" data-original-title="Картой курьеру">
+				    	<input type="radio" name="client_payment" value="3">
+				    	<i class="icon-person"></i>
+				    </label>
+				</div>
+			</div>
+			<br/>
+			<div class="well well-sm js-client-hideOnNoSum">
+			    Сумма к оплате:  
+			    <div class="pull-right">
+			    	<code>
+			    		<span class="js-prolongPackagePaymentAmmount"><%= actions.options[0].price ? actions.options[0].price : '' %></span>
+			    	</code>
+			    </div>
+			</div>
+		</div>
+	</form>
+</script>
+
+
+<script type="text/template" id="client-prolongPackageTemplate">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header bg-success">
+				<button type="button" class="close" data-dismiss="modal">×</button>
+				<h5 class="modal-title">Продлить пакет</h5>
+			</div>
+
+			
+			<div class="wrapper_translit_form">
+				<div class="modal-body">
+					<div class="modal-body">
+					<div class="wrap_change">
+						<div class="inner_change_wrappwer_left col-md-6">
+							<div class="panel-heading">
+								<h6 class="panel-title">Пакет</h6>
+							</div>
+							<div class="table-responsive">
+								<table class="table">
+									<tbody>
+										<tr>
+											<td>
+												<div class="media-left media-middle">
+													<div class="btn btn-rounded btn-icon btn-xs <%= package.type == 'Silver' ? 'bg-grey-300' : 'bg-orange-400' %>">
+														<span class="letter-icon"><%= package.type == 'Silver' ? 'S' : 'G' %></span>
+													</div>
+												</div>
+												<div class="media-body">
+													<div class="media-heading">
+														<div class="letter-icon-title"><%= package.packageName %></div>
+													</div>
+													<div class="text-muted text-size-small"><i class="icon-checkmark3 text-size-mini position-left"></i> текущий пакет</div>
+												</div>
+											</td>
+											<td align="center">
+												<h6 class="text-semibold no-margin">
+													<p><%= package.daysRemain %> Дней</p>
+												</h6>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>	
+						</div>
+						<div class="innere_change_wrapper_right col-md-6">
+							<div class="panel-heading">
+								<h6 class="panel-title">Продлить</h6>
+							</div>
+							<div class="panel-body">
+								<form>
+									<div class="panel-body no-padding js-prolongPackageDaysChange">
+										<p>Продлить, на дней: </p>
+										<ul class="pagination-rounded clients_radio col-md-12 no-padding">
+											<% 
+												for(var i=0,len=prolong.options.length;i<len;i++){ 
+												var item = prolong.options[i];
+											%>
+
+												<li>
+										    		<label data-popup="tooltip" data-container="body" data-original-title="Продлить на <%= item.packageLength %> дней">
+										    			<input <%= i==0 ? 'checked' : '' %> type="radio" name="client_priceId" value="<%= item.priceToPay %>">
+										    			<span><%= item.packageLength %></span>
+										    		</label>
+										    	</li>
+											<% } %>
+										</ul>
+									</div>
+									<div class="panel-body no-border no-padding">
+										<div class="clients_radio_extend">
+											<label class="no-margin-left" data-popup="tooltip" data-container="body" data-original-title="Наличными">
+										    	<input type="radio" name="client_payment" value="1" checked>
+										    	<i class="icon-coin-dollar"></i>
+										    </label>
+
+										    <label data-popup="tooltip" data-container="body" data-original-title="Картой онлайн">
+										    	<input type="radio" name="client_payment" value="2">
+										    	<i class="icon-credit-card"></i>
+										    </label>
+
+										    <label class="no-margin-right" data-popup="tooltip" data-container="body" data-original-title="Картой курьеру">
+										    	<input type="radio" name="client_payment" value="3">
+										    	<i class="icon-person"></i>
+										    </label>
+										</div>
+									</div>
+									<br/>
+									<div class="well well-sm js-client-hideOnNoSum">
+					                    Сумма к оплате:  
+					                    <div class="pull-right">
+					                    	<code>
+					                    		<span class="js-prolongPackagePaymentAmmount"><%= prolong.options[0].priceToPay %></span>
+					                    	</code>
+					                    </div>
+									</div>
+								</form>
+							</div>
+						</div>
+	            </div>
+	        </div>
+		     </div>
+		     <div class="modal-footer">
+		      	<ul class="pager">
+				    <button type="button" class="btn btn-default col-sm-3" data-dismiss="modal">Отмена</button>
+					<li class="next pull-right">
+						<button type="button" class="btn btn-default btn-ladda btn-ladda-spinner js-sendProlongPackage" data-spinner-size="20" data-spinner-color="#333" data-style="expand-left">
+							<span class="ladda-label">Продлить</span>
+						</button>
+					</li>
+				</ul>
+		     </div>
+		</div>
+	</div>
+</script>
